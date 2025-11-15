@@ -51,6 +51,7 @@ def start_scan():
             try:
                 socketio.emit('scan_output', {'line': line}, room=room)
             except Exception:
+                # don't crash on emit errors
                 pass
             output_lines.append(line)
         sr.output = '\n'.join(output_lines)

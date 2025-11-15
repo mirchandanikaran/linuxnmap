@@ -4,8 +4,8 @@ import shutil
 
 def stream_nmap_scan(target, args):
     """
-    Streams lines from nmap as they appear. Yields human-readable error lines
-    (beginning with [ERROR]) if nmap not available or fails.
+    Runs nmap with args and yields stdout lines as they appear.
+    Emits helpful [ERROR] lines when nmap is missing or fails.
     """
     if not shutil.which("nmap"):
         yield "[ERROR] nmap is not installed or not in PATH. Install nmap and retry."
