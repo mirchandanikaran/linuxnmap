@@ -12,8 +12,8 @@ scans_bp = Blueprint('scans', __name__, template_folder='../templates', url_pref
 @scans_bp.route('/start-scan', methods=['POST'])
 @login_required
 def start_scan():
-    target = request.form.get('target', '').strip()
-    scan_type = request.form.get('scan_type', '').strip()
+    target = (request.form.get('target') or '').strip()
+    scan_type = (request.form.get('scan_type') or '').strip()
 
     if not target:
         flash('Please provide a target.', 'danger')
@@ -39,7 +39,7 @@ def start_scan():
     db.session.add(sr)
     db.session.commit()
 
-    room = f'scan-{sr.id}'
+    room = f"scan-{sr.id}"
     socketio = getattr(current_app, 'socketio', None)
     if socketio is None:
         flash('Internal server error: realtime socket not available.', 'danger')

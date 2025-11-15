@@ -1,24 +1,28 @@
-/* Terminal style */
+/* main.css - UI and terminal styling */
+
+/* general */
+body.light-mode { background: #f5f6fa; color: #111; }
+body.dark-mode { background: #0b0b0b; color: #ddd; }
+
+/* sidebar */
+.sidebar { border-right: 1px solid rgba(0,0,0,0.05); }
+
+/* cards in dark mode */
+body.dark-mode .card { background: #1e1e1e !important; color: #ddd; border-color: rgba(255,255,255,0.03);}
+body.dark-mode .table { color:#ddd; }
+
+/* terminal style */
 .terminal-window {
-    font-family: monospace;
-    font-size: 14px;
-    background: #000;
-    color: #00ff88;
-    padding: 15px;
-    border-radius: 8px;
-    height: 400px;
-    overflow-y: auto;
+  font-family: monospace;
+  font-size: 13px;
+  background: #000;
+  color: #00ff88;
+  padding: 12px;
+  border-radius: 8px;
+  height: 400px;
+  overflow-y: auto;
+  white-space: pre-wrap;
 }
 
-/* Dark mode adjustments */
-body.dark-mode .card {
-    background: #202020 !important;
-    color: #ddd;
-}
-body.dark-mode .table {
-    color: #ddd;
-}
-body.dark-mode pre {
-    background: #000;
-    color: #00ff88;
-}
+/* small helpers */
+.host-badge { cursor: pointer; user-select: none; }
