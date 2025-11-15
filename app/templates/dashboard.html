@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Dashboard</h2>
+
+<div class="row">
+  <div class="col-lg-6 mb-3">
+    <div class="card p-3 mb-3">
+      <h5>Your Local IP: {{ local_ip }}</h5>
+      <p>Devices found in your subnet:</p>
+      <div>
+        {% for host in alive_hosts %}
+          <!-- host is an IP string now -->
+          <span class="badge bg-primary m-1 host-badge" data-ip="{{ host }}"
+                onclick="document.getElementById('targetField').value=this.dataset.ip;">
+            {{ host }}
+          </span>
+        {% else %}
+          <small class="text-muted">No hosts discovered (or discovery failed).</small>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="card p-3">
+      <h5>Quick Scan</h5>
+      <form action="{{ url_for('scans.start_scan') }}" method="post" id="quickScanForm">
+        <div class="mb-2">
+          <input id="targetField" name="target" class="form-control" placeholder="target (click a badge above)" required>
+        </div>
+
+        <div class="mb-2">
+          <select class="form-select" name="scan_type">
+            <option value="ping_scan">Ping Scan (-sn)</option>
+            <option value="fast_scan">Fast (-F)</option>
+            <option value="top_ports">Top Ports</option>
+            <option value="full_port_scan">Full (-p-)</option>
+            <option value="service_version">Service/Version (-sV)</option>
+            <option value="os_detection">OS (-O)</option>
+            <option value="vuln_scan">Vuln (--script vuln)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">Start Scan</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-lg-6 mb-3">
+    <div class="card p-3 h-100">
+      <h5>Scan Activity (last 14 days)</h5>
+      <canvas id="activityChart" height="160"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+/* chart fetch - url provided by blueprint chart endpoint */
+fetch("{{ url_for('dashboard.index').rstrip('/') + '/chart-data' }}".replace('/','/chart-data'))
+  .then(r=>r.json())
+  .then(data=>{
+    const ctx = document.getElementById('activityChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: data.labels,
+        datasets: [{
+          label: 'Scans',
+          data: data.counts,
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: { responsive:true, maintainAspectRatio:false }
+    });
+  })
+  .catch(()=>{/* ignore errors for chart */});
+</script>
+{% endblock %}

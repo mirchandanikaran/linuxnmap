@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Live Terminal</h2>
+<div class="card p-3">
+  <div id="terminal" class="terminal-window" style="height:400px; overflow:auto;"></div>
+  <div class="mt-3">
+    <a href="{{ url_for('history.view_history') }}" class="btn btn-secondary">View History</a>
+  </div>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const room = params.get('room');
+
+const socket = io();
+
+socket.on('connect', () => {
+  if (room) socket.emit('join', { room: room });
+});
+
+socket.on('scan_output', (data) => {
+  const t = document.getElementById('terminal');
+  t.innerText += data.line + "\n";
+  t.scrollTop = t.scrollHeight;
+});
+
+socket.on('scan_complete', (data) => {
+  const t = document.getElementById('terminal');
+  t.innerText += `\n--- Scan completed (id=${data.scan_id}) ---\n`;
+  t.scrollTop = t.scrollHeight;
+});
+</script>
+{% endblock %}

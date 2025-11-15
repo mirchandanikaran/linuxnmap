@@ -1,0 +1,24 @@
+/* Terminal style */
+.terminal-window {
+    font-family: monospace;
+    font-size: 14px;
+    background: #000;
+    color: #00ff88;
+    padding: 15px;
+    border-radius: 8px;
+    height: 400px;
+    overflow-y: auto;
+}
+
+/* Dark mode adjustments */
+body.dark-mode .card {
+    background: #202020 !important;
+    color: #ddd;
+}
+body.dark-mode .table {
+    color: #ddd;
+}
+body.dark-mode pre {
+    background: #000;
+    color: #00ff88;
+}

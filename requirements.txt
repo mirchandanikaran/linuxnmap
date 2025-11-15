@@ -1,0 +1,7 @@
+Flask>=2.2
+Flask-Login>=0.6
+Flask-SocketIO>=5.3
+eventlet>=0.33.3
+SQLAlchemy>=1.4
+flask_sqlalchemy>=3.0
+python-dotenv>=1.0
